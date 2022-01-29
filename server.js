@@ -13,19 +13,23 @@ const serverList = [
 ]
 
 loadBalancer.get("*", (req, res) => {
-    const { method } = req
+    const { method, protocol, originalUrl } = req
 
     const target = serverList[idx++];
-    if(idx >= serverList.length) idx = 0;
+    if(idx >= serverList.length) idx = 0
 
-    axios.request(target, {
+    const requestUrl = `${protocol}://${target}${originalUrl}`
+
+    axios.request(requestUrl, {
         method,
     })
         .then(result => {
+            console.log('result', result.headers)
+            res.set({...result.headers})
             res.send(result.data)
         })
-        .catch(err => {
-            res.send(err)
+        .catch(error => {
+            res.send(error)
         })
 })
 
@@ -49,6 +53,11 @@ const handler = num => (req,res)=>{
     console.log("num!!!!!!    ", num)
     console.log('session', req.session)
 
+    res.set({
+        'ETag': '123456',
+        'hi': 'hi',
+        'Set-Cookie': 'name=12345'
+      })
     res.send('Response from server ' + num);
 }
 
