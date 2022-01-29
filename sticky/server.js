@@ -15,7 +15,7 @@ app3.use(express.urlencoded({ extended: false }))
 
 // 3. 응답 내용 구성
 const mainHandler = num => (req, res) => {
-    res.send(`<h1>안녕하세요 ${num} 번 서버입니다.</h1>`)
+    res.send(`<h1>안녕하세요 ${num} 번 서버입니다.</h1><h2><a href="/login">로그인</a></h2>`)
 }
 
 const loginTemplateHandler = num => (req, res) => {
